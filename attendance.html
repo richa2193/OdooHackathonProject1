@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FacultyFlow | Attendance Registry</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/style.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- ChartJS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --sidebar-bg: #0f172a;
+      --sidebar-text: #94a3b8;
+      --primary-color: #4f46e5;
+      --primary-hover: #4338ca;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #09090b;
+      --card-bg: #18181b;
+      --text-main: #f8fafc;
+      --text-muted: #a1a1aa;
+      --border-color: #27272a;
+      --sidebar-bg: #09090b;
+      --sidebar-text: #a1a1aa;
+      --primary-color: #6366f1;
+      --primary-hover: #818cf8;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .app-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 260px;
+      background-color: var(--sidebar-bg);
+      color: #ffffff;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border-color);
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      height: 36px;
+      width: 36px;
+      border-radius: 8px;
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-menu {
+      padding: 20px 14px;
+      flex: 1;
+      list-style: none;
+      margin: 0;
+    }
+
+    .menu-item {
+      margin-bottom: 6px;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      color: var(--sidebar-text);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .menu-link:hover, .menu-link.active {
+      color: #ffffff;
+      background-color: rgba(99, 102, 241, 0.15);
+    }
+
+    .menu-link.active i {
+      color: var(--primary-color);
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .top-nav {
+      height: 70px;
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .theme-toggle-btn {
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      height: 38px;
+      width: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #e2e8f0;
+    }
+
+    .content-body {
+      padding: 30px;
+      flex: 1;
+    }
+
+    .table-container {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    }
+
+    .form-control-custom {
+      background-color: transparent !important;
+      border: 1px solid var(--border-color) !important;
+      color: var(--text-main) !important;
+      border-radius: 8px !important;
+      font-size: 13px !important;
+    }
+
+    .form-control-custom:focus {
+      border-color: var(--primary-color) !important;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+    }
+
+    .table th {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-bottom: 2px solid var(--border-color);
+      padding: 14px 10px;
+    }
+
+    .table td {
+      font-size: 13px;
+      padding: 14px 10px;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .action-btn {
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .dashboard-chart-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      height: 300px;
+    }
+
+    .toggle-sidebar-btn {
+      display: none;
+    }
+
+    @media (max-width: 991.98px) {
+      .sidebar {
+        position: fixed;
+        left: -260px;
+        top: 0;
+        bottom: 0;
+      }
+      .sidebar.show {
+        left: 0;
+      }
+      .toggle-sidebar-btn {
+        display: inline-flex;
+        border: 1px solid var(--border-color);
+        background-color: var(--card-bg);
+        color: var(--text-main);
+        padding: 6px 12px;
+        border-radius: 8px;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Sidebar -->
+    <aside id="app-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">FF</div>
+        <span class="fs-5 fw-bold text-white tracking-wide">FacultyFlow</span>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-item">
+          <a href="dashboard.html" class="menu-link">
+            <i class="bi bi-grid-1x2-fill"></i>Dashboard
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="students.html" class="menu-link">
+            <i class="bi bi-mortarboard-fill"></i>Manage Students
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link active">
+            <i class="bi bi-calendar-check-fill"></i>Attendance Sheet
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/profile" class="menu-link">
+            <i class="bi bi-person-fill-gear"></i>Settings
+          </a>
+        </li>
+      </ul>
+
+      <div class="p-3 border-top border-secondary-subtle mt-auto">
+        <button onclick="handleLogout()" class="btn btn-outline-danger w-full text-start d-flex align-items-center gap-2 border-0 w-100 py-2.5 px-3 rounded-3" style="font-size: 13px; font-weight: 600;">
+          <i class="bi bi-box-arrow-right"></i>Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Container -->
+    <main class="main-content">
+      <!-- Top Navbar -->
+      <header class="top-nav">
+        <div class="d-flex align-items-center">
+          <button id="toggle-sidebar" class="toggle-sidebar-btn" onclick="toggleSidebar()">
+            <i class="bi bi-list"></i>
+          </button>
+          <h2 class="h5 fw-bold mb-0">Attendance Sheets</h2>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+          <!-- Dark Mode Button -->
+          <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">
+            <i id="theme-icon" class="bi bi-moon-fill"></i>
+          </button>
+
+          <!-- User Profile -->
+          <div class="user-profile">
+            <img id="user-avatar" class="user-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" alt="Avatar">
+            <div class="d-none d-md-block text-start leading-tight">
+              <div id="user-name" class="fw-bold small">Dr. Sarah Jenkins</div>
+              <div id="user-role" class="text-muted" style="font-size: 10px; text-transform: uppercase;">FACULTY</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Body -->
+      <section class="content-body">
+        
+        <!-- Header Actions -->
+        <div class="d-flex flex-column sm:flex-row justify-content-between align-items-start sm:align-items-center gap-3 mb-4">
+          <div>
+            <h1 class="h3 fw-extrabold mb-1">Class Attendance Logs</h1>
+            <p class="text-muted small mb-0">Record roll call presence, adjust logs, and inspect average metrics.</p>
+          </div>
+          <button class="btn btn-primary d-flex align-items-center gap-1.5 px-4 py-2 rounded-3 border-0" style="background-color: var(--primary-color);" onclick="openAttendanceModal()">
+            <i class="bi bi-calendar-plus"></i> Record Attendance
+          </button>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row g-4 mb-4">
+          <div class="col-12 col-md-4">
+            <div class="dashboard-chart-card">
+              <h6 class="fw-bold mb-3" style="font-size: 12px; text-transform: uppercase; color: var(--text-main);">Overall Presence</h6>
+              <div style="height: 200px; position: relative;">
+                <canvas id="overallDonutChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="dashboard-chart-card">
+              <h6 class="fw-bold mb-3" style="font-size: 12px; text-transform: uppercase; color: var(--text-main);">Subject Attendance Averages</h6>
+              <div style="height: 200px; position: relative;">
+                <canvas id="subjectsBarChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="table-container">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+            <h5 class="fw-bold fs-6 mb-0">Student Attendance Summary</h5>
+            
+            <div class="d-flex gap-2">
+              <select id="subject-filter" class="form-select form-control-custom w-auto" onchange="handleFilter()">
+                <option value="all">All Subjects</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Database Systems">Database Systems</option>
+                <option value="Artificial Intelligence">Artificial Intelligence</option>
+                <option value="Computer Networks">Computer Networks</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Attendance Table -->
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>Student Name</th>
+                  <th>Subject</th>
+                  <th>Present Lectures</th>
+                  <th>Total Lectures</th>
+                  <th>Percentage</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="attendance-table-body">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- RECORD / EDIT MODAL -->
+  <div class="modal fade" id="attendanceModal" tabindex="-1" aria-labelledby="attendanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-bottom-0 pb-0">
+          <h5 class="modal-title fw-bold" id="attendanceModalLabel">Record Roll Call</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="attendance-form" onsubmit="handleFormSubmit(event)">
+          <input type="hidden" id="edit-idx">
+          <div class="modal-body py-3">
+            
+            <div class="mb-3">
+              <label for="modal-student" class="form-label small fw-bold">Select Student</label>
+              <select id="modal-student" class="form-select form-control-custom" required>
+                <!-- Injected via JS -->
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="modal-subject" class="form-label small fw-bold">Subject</label>
+              <select id="modal-subject" class="form-select form-control-custom" required>
+                <option value="Web Development">Web Development</option>
+                <option value="Database Systems">Database Systems</option>
+                <option value="Artificial Intelligence">Artificial Intelligence</option>
+                <option value="Computer Networks">Computer Networks</option>
+              </select>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-6">
+                <label for="modal-present" class="form-label small fw-bold">Present Lectures</label>
+                <input type="number" min="0" id="modal-present" class="form-control form-control-custom" required>
+              </div>
+              <div class="col-6">
+                <label for="modal-total" class="form-label small fw-bold">Total Lectures</label>
+                <input type="number" min="1" id="modal-total" class="form-control form-control-custom" required>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer border-top-0 pt-0">
+            <button type="button" class="btn btn-light rounded-3 text-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary rounded-3 px-4 border-0" style="background-color: var(--primary-color);">Save Roll</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Theme Toggle
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const target = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', target);
+      localStorage.setItem('ff_theme', target);
+      updateThemeIcon(target);
+    }
+
+    function updateThemeIcon(theme) {
+      const themeIcon = document.getElementById('theme-icon');
+      if (theme === 'dark') {
+        themeIcon.className = 'bi bi-sun-fill';
+      } else {
+        themeIcon.className = 'bi bi-moon-fill';
+      }
+    }
+
+    // Load initial theme
+    const theme = localStorage.getItem('ff_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    updateThemeIcon(theme);
+
+    // Sidebar Toggle
+    function toggleSidebar() {
+      const sidebar = document.getElementById('app-sidebar');
+      sidebar.classList.toggle('show');
+    }
+
+    // Auth validation
+    let user = null;
+    try {
+      user = JSON.parse(localStorage.getItem('ff_auth'));
+    } catch(e) {}
+
+    if (!user) {
+      window.location.href = '/login.html';
+    }
+
+    document.getElementById('user-name').textContent = user.name;
+    document.getElementById('user-role').textContent = user.role;
+    if (user.avatar) {
+      document.getElementById('user-avatar').src = user.avatar;
+    }
+
+    // Dynamic lists & Attendance database
+    let students = [];
+    let attendance = [];
+
+    const defaultAttendance = [
+      { id: 'att_1', studentId: 'student1', studentName: 'Ayushi Sharma', subject: 'Web Development', present: 18, total: 20 },
+      { id: 'att_2', studentId: 'student1', studentName: 'Ayushi Sharma', subject: 'Database Systems', present: 17, total: 20 },
+      { id: 'att_3', studentId: 'student1', studentName: 'Ayushi Sharma', subject: 'Artificial Intelligence', present: 12, total: 20 },
+      { id: 'att_4', studentId: 'student1', studentName: 'Ayushi Sharma', subject: 'Computer Networks', present: 19, total: 20 },
+      { id: 'att_5', studentId: 'student2', studentName: 'Karena Roy', subject: 'Web Development', present: 16, total: 20 },
+      { id: 'att_6', studentId: 'student2', studentName: 'Karena Roy', subject: 'Database Systems', present: 15, total: 20 }
+    ];
+
+    function loadData() {
+      // Students
+      const localStuds = localStorage.getItem('ff_students');
+      if (localStuds) {
+        students = JSON.parse(localStuds);
+      } else {
+        students = [
+          { id: 'student1', name: 'Ayushi Sharma', studentCode: 'STU101', email: 'ayushi.s@student.edu', gpa: 8.7 },
+          { id: 'student2', name: 'Karena Roy', studentCode: 'STU102', email: 'karena.r@student.edu', gpa: 7.9 }
+        ];
+        localStorage.setItem('ff_students', JSON.stringify(students));
+      }
+
+      // Attendance
+      const localAtt = localStorage.getItem('ff_attendance_sheet');
+      if (localAtt) {
+        attendance = JSON.parse(localAtt);
+      } else {
+        attendance = defaultAttendance;
+        localStorage.setItem('ff_attendance_sheet', JSON.stringify(attendance));
+      }
+    }
+
+    loadData();
+
+    let bootstrapModal;
+    let donutChart;
+    let barChart;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      bootstrapModal = new bootstrap.Modal(document.getElementById('attendanceModal'));
+      populateStudentsDropdown();
+      renderTable();
+      renderCharts();
+    });
+
+    function populateStudentsDropdown() {
+      const select = document.getElementById('modal-student');
+      select.innerHTML = '';
+      students.forEach(s => {
+        select.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+      });
+    }
+
+    function handleFilter() {
+      renderTable();
+    }
+
+    function renderTable() {
+      const subFilter = document.getElementById('subject-filter').value;
+      const filtered = attendance.filter(a => subFilter === 'all' || a.subject === subFilter);
+
+      const tbody = document.getElementById('attendance-table-body');
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted small">No attendance records found.</td></tr>`;
+      } else {
+        filtered.forEach((a) => {
+          const percentage = a.total > 0 ? Math.round((a.present / a.total) * 100) : 0;
+          const statusBadge = percentage >= 75 
+            ? '<span class="badge bg-success-subtle text-success px-2 py-1 rounded">Safe Status</span>' 
+            : '<span class="badge bg-warning-subtle text-warning px-2 py-1 rounded">Shortage Alert</span>';
+          
+          const originalIdx = attendance.findIndex(item => item.id === a.id);
+
+          tbody.innerHTML += `
+            <tr>
+              <td class="fw-semibold">${a.studentName}</td>
+              <td class="text-secondary">${a.subject}</td>
+              <td><strong>${a.present}</strong> lectures</td>
+              <td class="text-muted">${a.total} lectures</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <strong class="${percentage >= 75 ? 'text-success' : 'text-warning'}">${percentage}%</strong>
+                  ${statusBadge}
+                </div>
+              </td>
+              <td class="text-end">
+                <button class="btn btn-outline-secondary action-btn" onclick="openEditModal(${originalIdx})"><i class="bi bi-pencil"></i> Edit</button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+    }
+
+    function renderCharts() {
+      // Donut Chart logic: Total present vs Total absent
+      const totalPresent = attendance.reduce((sum, curr) => sum + curr.present, 0);
+      const totalLectures = attendance.reduce((sum, curr) => sum + curr.total, 0);
+      const totalAbsent = totalLectures - totalPresent;
+
+      const donutCtx = document.getElementById('overallDonutChart').getContext('2d');
+      if (donutChart) donutChart.destroy();
+      donutChart = new Chart(donutCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Present', 'Absent'],
+          datasets: [{
+            data: [totalPresent, totalAbsent],
+            backgroundColor: ['#4f46e5', '#cbd5e1'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
+          },
+          cutout: '75%'
+        }
+      });
+
+      // Subject averages
+      const subjects = ['Web Development', 'Database Systems', 'Artificial Intelligence', 'Computer Networks'];
+      const averages = subjects.map(sub => {
+        const matching = attendance.filter(a => a.subject === sub);
+        if (matching.length === 0) return 0;
+        const present = matching.reduce((sum, curr) => sum + curr.present, 0);
+        const total = matching.reduce((sum, curr) => sum + curr.total, 0);
+        return total > 0 ? Math.round((present / total) * 100) : 0;
+      });
+
+      const barCtx = document.getElementById('subjectsBarChart').getContext('2d');
+      if (barChart) barChart.destroy();
+      barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Web Dev', 'DBMS', 'AI', 'Networks'],
+          datasets: [{
+            label: 'Avg Presence %',
+            data: averages,
+            backgroundColor: '#818cf8',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { min: 0, max: 100 }
+          }
+        }
+      });
+    }
+
+    function openAttendanceModal() {
+      document.getElementById('attendanceModalLabel').textContent = 'Record Attendance Roll';
+      document.getElementById('edit-idx').value = '';
+      document.getElementById('modal-student').disabled = false;
+      document.getElementById('modal-subject').disabled = false;
+      document.getElementById('modal-present').value = '';
+      document.getElementById('modal-total').value = '20';
+      bootstrapModal.show();
+    }
+
+    function openEditModal(idx) {
+      const a = attendance[idx];
+      document.getElementById('attendanceModalLabel').textContent = 'Edit Attendance Record';
+      document.getElementById('edit-idx').value = idx;
+      
+      document.getElementById('modal-student').value = a.studentId;
+      document.getElementById('modal-student').disabled = true;
+
+      document.getElementById('modal-subject').value = a.subject;
+      document.getElementById('modal-subject').disabled = true;
+
+      document.getElementById('modal-present').value = a.present;
+      document.getElementById('modal-total').value = a.total;
+
+      bootstrapModal.show();
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      const idxVal = document.getElementById('edit-idx').value;
+      const present = parseInt(document.getElementById('modal-present').value);
+      const total = parseInt(document.getElementById('modal-total').value);
+
+      if (present > total) {
+        alert('Present lectures cannot exceed total lectures.');
+        return;
+      }
+
+      if (idxVal === '') {
+        // ADD
+        const studentId = document.getElementById('modal-student').value;
+        const studentName = students.find(s => s.id === studentId)?.name || 'Student';
+        const subject = document.getElementById('modal-subject').value;
+
+        // Check duplicate
+        const exists = attendance.some(a => a.studentId === studentId && a.subject === subject);
+        if (exists) {
+          alert('Attendance record already exists for this student and subject. Edit it instead.');
+          return;
+        }
+
+        const newRecord = {
+          id: 'att_' + Date.now(),
+          studentId,
+          studentName,
+          subject,
+          present,
+          total
+        };
+        attendance.push(newRecord);
+      } else {
+        // EDIT
+        const idx = parseInt(idxVal);
+        attendance[idx].present = present;
+        attendance[idx].total = total;
+      }
+
+      localStorage.setItem('ff_attendance_sheet', JSON.stringify(attendance));
+      bootstrapModal.hide();
+      renderTable();
+      renderCharts();
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('ff_auth');
+      window.location.href = '/login.html';
+    }
+  </script>
+</body>
+</html>

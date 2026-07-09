@@ -1,0 +1,420 @@
+{
+  "users": [
+    {
+      "id": "teacher1",
+      "username": "sarah",
+      "password": "password",
+      "name": "Dr. Sarah Jenkins",
+      "role": "faculty",
+      "email": "sarah.jenkins@facultyflow.edu",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150"
+    },
+    {
+      "id": "student1",
+      "username": "ayushi",
+      "password": "password",
+      "name": "Ayushi Sharma",
+      "role": "student",
+      "email": "ayushi.s@student.edu",
+      "studentCode": "STU101",
+      "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150",
+      "gpa": 8.7,
+      "gpaHistory": [
+        {
+          "semester": "Sem 1",
+          "gpa": 8.2
+        },
+        {
+          "semester": "Sem 2",
+          "gpa": 8.4
+        },
+        {
+          "semester": "Sem 3",
+          "gpa": 8.5
+        },
+        {
+          "semester": "Sem 4",
+          "gpa": 8.7
+        }
+      ]
+    },
+    {
+      "id": "student2",
+      "username": "karena",
+      "password": "password",
+      "name": "Karena Roy",
+      "role": "student",
+      "email": "karena.r@student.edu",
+      "studentCode": "STU102",
+      "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150",
+      "gpa": 7.2,
+      "gpaHistory": [
+        {
+          "semester": "Sem 1",
+          "gpa": 7
+        },
+        {
+          "semester": "Sem 2",
+          "gpa": 7.1
+        },
+        {
+          "semester": "Sem 3",
+          "gpa": 6.9
+        },
+        {
+          "semester": "Sem 4",
+          "gpa": 7.2
+        }
+      ]
+    },
+    {
+      "id": "parent1",
+      "username": "parent_sharma",
+      "password": "password",
+      "name": "Mr. Rakesh Sharma",
+      "role": "parent",
+      "email": "rakesh.sharma@gmail.com",
+      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150",
+      "linkedChildren": [
+        "student1"
+      ]
+    }
+  ],
+  "timetable": [
+    {
+      "id": "t1",
+      "day": "Monday",
+      "time": "09:00 AM - 10:00 AM",
+      "subject": "Web Development",
+      "room": "Lab 3",
+      "teacher": "Dr. Sarah Jenkins"
+    },
+    {
+      "id": "t2",
+      "day": "Monday",
+      "time": "10:15 AM - 11:15 AM",
+      "subject": "Database Systems",
+      "room": "Room 402",
+      "teacher": "Prof. Alan Turing"
+    },
+    {
+      "id": "t3",
+      "day": "Monday",
+      "time": "11:30 AM - 12:30 PM",
+      "subject": "Artificial Intelligence",
+      "room": "Room 501",
+      "teacher": "Dr. Grace Hopper"
+    },
+    {
+      "id": "t4",
+      "day": "Tuesday",
+      "time": "09:00 AM - 10:00 AM",
+      "subject": "Database Systems",
+      "room": "Room 402",
+      "teacher": "Prof. Alan Turing"
+    },
+    {
+      "id": "t5",
+      "day": "Tuesday",
+      "time": "10:15 AM - 11:15 AM",
+      "subject": "Web Development",
+      "room": "Lab 3",
+      "teacher": "Dr. Sarah Jenkins"
+    },
+    {
+      "id": "t6",
+      "day": "Wednesday",
+      "time": "09:00 AM - 10:00 AM",
+      "subject": "Artificial Intelligence",
+      "room": "Room 501",
+      "teacher": "Dr. Grace Hopper"
+    },
+    {
+      "id": "t7",
+      "day": "Wednesday",
+      "time": "11:30 AM - 12:30 PM",
+      "subject": "Computer Networks",
+      "room": "Room 304",
+      "teacher": "Dr. Sarah Jenkins"
+    }
+  ],
+  "attendance": [
+    {
+      "studentId": "student1",
+      "subject": "Web Development",
+      "present": 18,
+      "total": 20
+    },
+    {
+      "studentId": "student1",
+      "subject": "Database Systems",
+      "present": 17,
+      "total": 20
+    },
+    {
+      "studentId": "student1",
+      "subject": "Artificial Intelligence",
+      "present": 12,
+      "total": 20
+    },
+    {
+      "studentId": "student1",
+      "subject": "Computer Networks",
+      "present": 19,
+      "total": 20
+    },
+    {
+      "studentId": "student2",
+      "subject": "Web Development",
+      "present": 12,
+      "total": 20
+    },
+    {
+      "studentId": "student2",
+      "subject": "Database Systems",
+      "present": 14,
+      "total": 20
+    },
+    {
+      "studentId": "student2",
+      "subject": "Artificial Intelligence",
+      "present": 11,
+      "total": 20
+    },
+    {
+      "studentId": "student2",
+      "subject": "Computer Networks",
+      "present": 13,
+      "total": 20
+    }
+  ],
+  "attendanceLogs": [
+    {
+      "studentId": "student1",
+      "date": "2026-07-06",
+      "subject": "Web Development",
+      "status": "present"
+    },
+    {
+      "studentId": "student1",
+      "date": "2026-07-06",
+      "subject": "Database Systems",
+      "status": "present"
+    },
+    {
+      "studentId": "student1",
+      "date": "2026-07-07",
+      "subject": "Database Systems",
+      "status": "present"
+    },
+    {
+      "studentId": "student1",
+      "date": "2026-07-07",
+      "subject": "Web Development",
+      "status": "present"
+    },
+    {
+      "studentId": "student1",
+      "date": "2026-07-08",
+      "subject": "Artificial Intelligence",
+      "status": "absent"
+    },
+    {
+      "studentId": "student1",
+      "date": "2026-07-08",
+      "subject": "Computer Networks",
+      "status": "present"
+    },
+    {
+      "studentId": "student2",
+      "date": "2026-07-06",
+      "subject": "Web Development",
+      "status": "absent"
+    },
+    {
+      "studentId": "student2",
+      "date": "2026-07-06",
+      "subject": "Database Systems",
+      "status": "present"
+    },
+    {
+      "studentId": "student2",
+      "date": "2026-07-07",
+      "subject": "Database Systems",
+      "status": "absent"
+    },
+    {
+      "studentId": "student2",
+      "date": "2026-07-07",
+      "subject": "Web Development",
+      "status": "present"
+    }
+  ],
+  "assignments": [
+    {
+      "id": "a1",
+      "title": "Interactive React Dashboard",
+      "subject": "Web Development",
+      "dueDate": "2026-07-05",
+      "description": "Build a responsive web dashboard using React 19 and custom HSL variables. Animate elements with Framer Motion.",
+      "teacherId": "teacher1"
+    },
+    {
+      "id": "a2",
+      "title": "Linear Regression Classifier",
+      "subject": "Artificial Intelligence",
+      "dueDate": "2026-07-12",
+      "description": "Implement linear regression from scratch in Python and train it on the housing market dataset.",
+      "teacherId": "teacher1"
+    },
+    {
+      "id": "a3",
+      "title": "SQL Query Design - Library DB",
+      "subject": "Database Systems",
+      "dueDate": "2026-07-20",
+      "description": "Write advanced relational queries including triple joins, windowing functions, and indices optimization.",
+      "teacherId": "teacher1"
+    }
+  ],
+  "submissions": [
+    {
+      "id": "s1",
+      "assignmentId": "a1",
+      "studentId": "student1",
+      "status": "graded",
+      "content": "My React dashboard uses Tailwind CSS for layout styling and Framer Motion for smooth tab transitions. I also integrated Recharts for visual analytics.",
+      "fileName": "portfolio-dashboard-src.zip",
+      "submittedAt": "2026-07-04",
+      "grade": "A",
+      "feedback": "Outstanding work, Ayushi! The animations are clean, and the layout works perfectly on mobile viewports. Try using standard HSL CSS variables next time to make custom themes easier to configure."
+    },
+    {
+      "id": "s2",
+      "assignmentId": "a2",
+      "studentId": "student1",
+      "status": "submitted",
+      "content": "I finished the regression scripts and compiled the MSE results. The training error converges after 50 epochs.",
+      "fileName": "regression_ayushi.ipynb",
+      "submittedAt": "2026-07-08",
+      "grade": null,
+      "feedback": null
+    },
+    {
+      "id": "sub_1783583456147",
+      "assignmentId": "a3",
+      "studentId": "student1",
+      "status": "graded",
+      "content": "here my assiment complated",
+      "fileName": "Python Theory-01 (1).pdf",
+      "submittedAt": "2026-07-09",
+      "grade": "A",
+      "feedback": "[AI Evaluation]: Excellent submission! Detailed analysis with structured format. The explanation is sound, highly optimized, and follows development best practices."
+    }
+  ],
+  "materials": [
+    {
+      "id": "m1",
+      "title": "2025 Midterm Paper - Web Dev",
+      "type": "Question Paper",
+      "subject": "Web Development",
+      "url": "/mock-downloads/midterm_web_2025.pdf",
+      "size": "1.2 MB"
+    },
+    {
+      "id": "m2",
+      "title": "Database Normalization Guide (1NF-BCNF)",
+      "type": "Study Material",
+      "subject": "Database Systems",
+      "url": "/mock-downloads/normalization_guide.pdf",
+      "size": "3.4 MB"
+    },
+    {
+      "id": "m3",
+      "title": "Linear Algebra Cheat Sheet",
+      "type": "Study Material",
+      "subject": "Artificial Intelligence",
+      "url": "/mock-downloads/lin_alg_cheatsheet.pdf",
+      "size": "850 KB"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg1",
+      "senderId": "teacher1",
+      "receiverId": "parent1",
+      "content": "Hello Mr. Sharma, I wanted to let you know that Ayushi has done exceptionally well on her Web Development portfolio project. However, she missed class yesterday. Please let me know if she is unwell.",
+      "timestamp": "2026-07-08T09:30:00.000Z"
+    },
+    {
+      "id": "msg2",
+      "senderId": "parent1",
+      "receiverId": "teacher1",
+      "content": "Thank you, Dr. Jenkins! Yes, she had a minor fever yesterday. She is recovering and will attend today's classes.",
+      "timestamp": "2026-07-08T10:15:00.000Z"
+    }
+  ],
+  "meetings": [
+    {
+      "id": "meet1",
+      "teacherId": "teacher1",
+      "parentId": "parent1",
+      "studentId": "student1",
+      "title": "Semester Progress Review Meeting",
+      "date": "2026-07-15",
+      "time": "03:00 PM - 03:30 PM",
+      "room": "Zoom / Virtual Room B",
+      "status": "accepted",
+      "notes": "Discussing mid-semester grades, attendance warnings for AI, and upcoming exams."
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n1",
+      "userId": "student1",
+      "title": "Assignment Graded",
+      "content": "Dr. Sarah Jenkins graded your 'Interactive React Dashboard' with an A.",
+      "unread": true,
+      "timestamp": "2026-07-05T14:20:00.000Z"
+    },
+    {
+      "id": "n2",
+      "userId": "student1",
+      "title": "New Timetable Released",
+      "content": "A revised timetable for Computer Networks has been posted.",
+      "unread": false,
+      "timestamp": "2026-07-07T09:00:00.000Z"
+    },
+    {
+      "id": "n3",
+      "userId": "parent1",
+      "title": "Meeting Request Sent",
+      "content": "Dr. Sarah Jenkins requested a progress review meeting on July 15.",
+      "unread": true,
+      "timestamp": "2026-07-08T09:32:00.000Z"
+    },
+    {
+      "id": "n_1783583456150_1",
+      "userId": "student1",
+      "title": "Assignment AI Graded",
+      "content": "Your submission for 'SQL Query Design - Library DB' was automatically graded as 'A'.",
+      "unread": true,
+      "timestamp": "2026-07-09T07:50:56.150Z"
+    },
+    {
+      "id": "n_1783583456150_parent1",
+      "userId": "parent1",
+      "title": "Child Assignment Graded",
+      "content": "Your child submitted 'SQL Query Design - Library DB' and received an AI grade of 'A'.",
+      "unread": true,
+      "timestamp": "2026-07-09T07:50:56.150Z"
+    },
+    {
+      "id": "n_1783584080393",
+      "userId": "teacher1",
+      "title": "Meeting RSVP: ACCEPTED",
+      "content": "The parent has accepted the meeting request for 2026-07-15.",
+      "unread": true,
+      "timestamp": "2026-07-09T08:01:20.393Z"
+    }
+  ]
+}
