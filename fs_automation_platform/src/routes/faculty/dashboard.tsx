@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { AuthContext } from '../__root'
+import { Card, CardHeader, CardTitle, CardContent } from '~/components/ui/card'
 import { School, Send, Bell, Plus, Users, Clock, Award } from 'lucide-react'
 
 export const Route = createFileRoute('/faculty/dashboard')({
@@ -126,10 +127,13 @@ function FacultyDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         {/* Post New Announcement */}
-        <div className="md:col-span-1 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 shadow-sm space-y-4">
-          <h3 className="text-sm font-bold text-neutral-850 dark:text-white uppercase tracking-wider flex items-center gap-1.5 select-none">
-            <Bell className="h-4.5 w-4.5 text-indigo-500" /> Post Announcement
-          </h3>
+        <Card className="md:col-span-1 h-fit">
+          <CardHeader className="pb-2">
+            <CardTitle>
+              <Bell className="h-4.5 w-4.5 text-indigo-500" /> Post Announcement
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
           <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-normal select-none">
             Broadcast department-wide alerts, test reminders, or assignment updates directly to students.
           </p>
@@ -150,14 +154,17 @@ function FacultyDashboard() {
               <Send className="h-3.5 w-3.5" /> Broadcast Alert
             </button>
           </form>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Announcement Feed Log */}
-        <div className="md:col-span-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 shadow-sm space-y-4">
-          <h3 className="text-sm font-bold text-neutral-850 dark:text-white uppercase tracking-wider select-none">
-            Broadcast Log Feed
-          </h3>
-
+        <Card className="md:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="uppercase tracking-wider text-sm">
+              Broadcast Log Feed
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
           <div className="divide-y divide-neutral-100 dark:divide-neutral-800 max-h-80 overflow-y-auto pr-1">
             {announcementsList.length === 0 ? (
               <div className="text-center py-12 text-xs text-neutral-400">
@@ -186,7 +193,8 @@ function FacultyDashboard() {
               ))
             )}
           </div>
-        </div>
+          </CardContent>
+        </Card>
 
       </div>
     </div>

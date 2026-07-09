@@ -32,7 +32,9 @@ import {
   UserPlus, 
   Sun, 
   Moon, 
-  Bell 
+  Bell,
+  Cpu,
+  BrainCircuit
 } from 'lucide-react'
 
 export const Route = createRootRoute({
@@ -80,7 +82,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   // Fetch db and authenticate from localStorage
   const loadData = async () => {
     try {
-      const data = await getDb()
+      const tokenStr = localStorage.getItem('ff_tokens')
+      const token = tokenStr ? JSON.parse(tokenStr).access : undefined
+      const data = await getDb({ data: { token } })
       setDb(data)
       
       const authStr = localStorage.getItem('ff_auth')
@@ -182,6 +186,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         { label: 'Overview', to: '/faculty/dashboard', icon: <LayoutDashboard className="h-5 w-5" /> },
         { label: 'Attendance', to: '/faculty/attendance', icon: <Calendar className="h-5 w-5" /> },
         { label: 'Assignments', to: '/faculty/assignments', icon: <FileText className="h-5 w-5" /> },
+        { label: 'AI Generator', to: '/faculty/generator', icon: <BrainCircuit className="h-5 w-5" /> },
         { label: 'Messages', to: '/faculty/messages', icon: <MessageSquare className="h-5 w-5" /> },
       ]
     }

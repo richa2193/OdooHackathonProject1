@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { AuthContext } from '../__root'
+import { Card, CardHeader, CardTitle, CardContent } from '~/components/ui/card'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { 
   GraduationCap, 
@@ -92,19 +93,19 @@ function StudentDashboard() {
         {/* LEFT COLUMN: Classes & Timetable */}
         <div className="lg:col-span-2 space-y-6">
           {/* Today's Lectures */}
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>
                 <Calendar className="h-5 w-5 text-indigo-500" />
                 Today's Lectures
-              </h3>
+              </CardTitle>
               <Link to="/student/timetable" className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center hover:underline">
                 View Timetable <ChevronRight className="h-4 w-4" />
               </Link>
-            </div>
-            
+            </CardHeader>
+            <CardContent>
             {todayClasses.length === 0 ? (
-              <div className="text-center py-6 text-sm text-neutral-500 dark:text-neutral-400">
+              <div className="text-center py-2 text-sm text-neutral-500 dark:text-neutral-400">
                 No classes scheduled for today.
               </div>
             ) : (
@@ -129,20 +130,21 @@ function StudentDashboard() {
                 ))}
               </div>
             )}
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Performance chart */}
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>
                 <LineChart className="h-5 w-5 text-indigo-500" />
                 GPA Progress Trend
-              </h3>
+              </CardTitle>
               <Link to="/student/performance" className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center hover:underline">
                 Analysis <ChevronRight className="h-4 w-4" />
               </Link>
-            </div>
-            
+            </CardHeader>
+            <CardContent>
             <div className="h-64 w-full text-xs">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
@@ -173,13 +175,15 @@ function StudentDashboard() {
                 </LineChart>
               </ResponsiveContainer>
             </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* RIGHT COLUMN: Attendance & Assignments */}
         <div className="space-y-6">
           {/* Circular Attendance Gauge */}
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-sm text-center flex flex-col items-center">
+          <Card className="text-center flex flex-col items-center">
+            <CardContent className="pt-6 w-full flex flex-col items-center">
             <h3 className="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-wider mb-6 self-start">
               Overall Attendance
             </h3>
@@ -224,11 +228,12 @@ function StudentDashboard() {
             >
               Analyze Log
             </Link>
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Pending Assignments */}
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
+          <Card>
+            <CardHeader className="pb-3">
               <h3 className="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
                 <FileText className="h-4.5 w-4.5 text-indigo-500" />
                 Pending Actions
@@ -236,10 +241,10 @@ function StudentDashboard() {
               <span className="text-[10px] font-bold text-white bg-indigo-600 px-2 py-0.5 rounded-full">
                 {pendingAssignments.length}
               </span>
-            </div>
-            
+            </CardHeader>
+            <CardContent>
             {pendingAssignments.length === 0 ? (
-              <div className="text-center py-6 text-xs text-neutral-500 dark:text-neutral-400 flex flex-col items-center gap-1.5">
+              <div className="text-center py-2 text-xs text-neutral-500 dark:text-neutral-400 flex flex-col items-center gap-1.5">
                 <CheckCircle2 className="h-6 w-6 text-emerald-500" />
                 All caught up! No pending assignments.
               </div>
@@ -274,7 +279,8 @@ function StudentDashboard() {
                 ))}
               </div>
             )}
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
       </div>

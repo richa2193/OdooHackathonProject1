@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { AuthContext } from '../__root'
+import { Card, CardHeader, CardTitle, CardContent } from '~/components/ui/card'
 import { linkChild } from '~/utils/db'
 import { Users, UserPlus, GraduationCap, ChevronRight, CheckCircle2, ShieldAlert } from 'lucide-react'
 
@@ -74,11 +75,13 @@ function ParentDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         {/* LEFT COLUMN: Link Child Card */}
-        <div className="md:col-span-1 space-y-6 select-none">
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 shadow-sm space-y-4">
-            <h3 className="text-sm font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider flex items-center gap-1.5">
+        <Card className="md:col-span-1 h-fit">
+          <CardHeader className="pb-2">
+            <CardTitle className="uppercase tracking-wider text-sm flex items-center gap-1.5">
               <UserPlus className="h-4.5 w-4.5 text-indigo-500" /> Link Student
-            </h3>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-normal">
               Enter the unique student code provided by the administrator (e.g. <strong className="font-semibold text-indigo-500">STU102</strong>) to link your account.
             </p>
@@ -115,8 +118,8 @@ function ParentDashboard() {
                 {isLoading ? 'Linking...' : 'Link Child'}
               </button>
             </form>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* RIGHT COLUMN: Linked Children List */}
         <div className="md:col-span-2 space-y-4">
@@ -138,9 +141,9 @@ function ParentDashboard() {
                 const attendancePercent = total > 0 ? Math.round((present / total) * 100) : 0
 
                 return (
-                  <div
+                  <Card
                     key={child.id}
-                    className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:shadow-md transition-all"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:shadow-md transition-all p-5"
                   >
                     <div className="flex items-center gap-3.5">
                       <img
@@ -174,7 +177,7 @@ function ParentDashboard() {
                         Academic Profile <ChevronRight className="h-3.5 w-3.5" />
                       </Link>
                     </div>
-                  </div>
+                  </Card>
                 )
               })}
             </div>

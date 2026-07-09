@@ -1,0 +1,1 @@
+import{t as e}from"./PostError-DOttE9UE.js";var t=e;export{t as errorComponent};

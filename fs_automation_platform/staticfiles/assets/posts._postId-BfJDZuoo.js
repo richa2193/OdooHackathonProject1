@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-DUAcabCT.js";import{E as t}from"./index-ByxroadG.js";var n=e(),r=()=>(0,n.jsx)(t,{children:`Post not found`});export{r as notFoundComponent};

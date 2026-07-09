@@ -30,6 +30,7 @@ import { Route as PostsPostIdRouteImport } from './routes/posts.$postId'
 import { Route as ParentMessagesRouteImport } from './routes/parent/messages'
 import { Route as ParentDashboardRouteImport } from './routes/parent/dashboard'
 import { Route as FacultyMessagesRouteImport } from './routes/faculty/messages'
+import { Route as FacultyGeneratorRouteImport } from './routes/faculty/generator'
 import { Route as FacultyDashboardRouteImport } from './routes/faculty/dashboard'
 import { Route as FacultyAttendanceRouteImport } from './routes/faculty/attendance'
 import { Route as FacultyAssignmentsRouteImport } from './routes/faculty/assignments'
@@ -146,6 +147,11 @@ const FacultyMessagesRoute = FacultyMessagesRouteImport.update({
   path: '/faculty/messages',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FacultyGeneratorRoute = FacultyGeneratorRouteImport.update({
+  id: '/faculty/generator',
+  path: '/faculty/generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FacultyDashboardRoute = FacultyDashboardRouteImport.update({
   id: '/faculty/dashboard',
   path: '/faculty/dashboard',
@@ -216,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/faculty/assignments': typeof FacultyAssignmentsRoute
   '/faculty/attendance': typeof FacultyAttendanceRoute
   '/faculty/dashboard': typeof FacultyDashboardRoute
+  '/faculty/generator': typeof FacultyGeneratorRoute
   '/faculty/messages': typeof FacultyMessagesRoute
   '/parent/dashboard': typeof ParentDashboardRoute
   '/parent/messages': typeof ParentMessagesRoute
@@ -246,6 +253,7 @@ export interface FileRoutesByTo {
   '/faculty/assignments': typeof FacultyAssignmentsRoute
   '/faculty/attendance': typeof FacultyAttendanceRoute
   '/faculty/dashboard': typeof FacultyDashboardRoute
+  '/faculty/generator': typeof FacultyGeneratorRoute
   '/faculty/messages': typeof FacultyMessagesRoute
   '/parent/dashboard': typeof ParentDashboardRoute
   '/parent/messages': typeof ParentMessagesRoute
@@ -281,6 +289,7 @@ export interface FileRoutesById {
   '/faculty/assignments': typeof FacultyAssignmentsRoute
   '/faculty/attendance': typeof FacultyAttendanceRoute
   '/faculty/dashboard': typeof FacultyDashboardRoute
+  '/faculty/generator': typeof FacultyGeneratorRoute
   '/faculty/messages': typeof FacultyMessagesRoute
   '/parent/dashboard': typeof ParentDashboardRoute
   '/parent/messages': typeof ParentMessagesRoute
@@ -315,6 +324,7 @@ export interface FileRouteTypes {
     | '/faculty/assignments'
     | '/faculty/attendance'
     | '/faculty/dashboard'
+    | '/faculty/generator'
     | '/faculty/messages'
     | '/parent/dashboard'
     | '/parent/messages'
@@ -345,6 +355,7 @@ export interface FileRouteTypes {
     | '/faculty/assignments'
     | '/faculty/attendance'
     | '/faculty/dashboard'
+    | '/faculty/generator'
     | '/faculty/messages'
     | '/parent/dashboard'
     | '/parent/messages'
@@ -379,6 +390,7 @@ export interface FileRouteTypes {
     | '/faculty/assignments'
     | '/faculty/attendance'
     | '/faculty/dashboard'
+    | '/faculty/generator'
     | '/faculty/messages'
     | '/parent/dashboard'
     | '/parent/messages'
@@ -413,6 +425,7 @@ export interface RootRouteChildren {
   FacultyAssignmentsRoute: typeof FacultyAssignmentsRoute
   FacultyAttendanceRoute: typeof FacultyAttendanceRoute
   FacultyDashboardRoute: typeof FacultyDashboardRoute
+  FacultyGeneratorRoute: typeof FacultyGeneratorRoute
   FacultyMessagesRoute: typeof FacultyMessagesRoute
   ParentDashboardRoute: typeof ParentDashboardRoute
   ParentMessagesRoute: typeof ParentMessagesRoute
@@ -576,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FacultyMessagesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faculty/generator': {
+      id: '/faculty/generator'
+      path: '/faculty/generator'
+      fullPath: '/faculty/generator'
+      preLoaderRoute: typeof FacultyGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faculty/dashboard': {
       id: '/faculty/dashboard'
       path: '/faculty/dashboard'
@@ -735,6 +755,7 @@ const rootRouteChildren: RootRouteChildren = {
   FacultyAssignmentsRoute: FacultyAssignmentsRoute,
   FacultyAttendanceRoute: FacultyAttendanceRoute,
   FacultyDashboardRoute: FacultyDashboardRoute,
+  FacultyGeneratorRoute: FacultyGeneratorRoute,
   FacultyMessagesRoute: FacultyMessagesRoute,
   ParentDashboardRoute: ParentDashboardRoute,
   ParentMessagesRoute: ParentMessagesRoute,

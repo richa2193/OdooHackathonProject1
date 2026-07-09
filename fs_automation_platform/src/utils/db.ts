@@ -29,23 +29,152 @@ export function writeDbRaw(data: any) {
 }
 
 // SERVER FUNCTIONS
-export const getDb = createServerFn({ method: 'GET' }).handler(async () => {
-  return readDbRaw()
+export const getDb = createServerFn({ method: 'GET' })
+  .validator((data: any) => data as { token?: string })
+  .handler(async ({ data: { token } }) => {
+    // 1. Get base mock data
+    const mockDb = readDbRaw()
+    
+    // 2. If no token, just return mock db
+    if (!token) {
+      return mockDb
+    }
+
+    try {
+      const headers = { 'Authorization': `Bearer ${token}` }
+      
+      // Fetch students
+      const studentsRes = await fetch('http://127.0.0.1:8000/api/students/', { headers })
+      const studentsData = studentsRes.ok ? await studentsRes.json() : { results: [] }
+      
+      // Fetch faculty
+      const facultyRes = await fetch('http://127.0.0.1:8000/api/faculty/', { headers })
+      const facultyData = facultyRes.ok ? await facultyRes.json() : { results: [] }
+
+      // Fetch attendance
+      const attendanceRes = await fetch('http://127.0.0.1:8000/api/attendance/', { headers })
+      const attendanceData = attendanceRes.ok ? await attendanceRes.json() : { results: [] }
+
+      // Map Django Users to Mock DB format
+      const liveUsers: any[] = []
+      
+      studentsData.results?.forEach((s: any) => {
+        liveUsers.push({
+          id: s.user_details.id,
+          username: s.user_details.username,
+          name: `${s.user_details.first_name} ${s.user_details.last_name}`.trim(),
+          role: 'student',
+          email: s.user_details.email,
+          studentCode: s.enrollment_number,
+          avatar: s.user_details.avatar || 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150',
+          gpa: 8.5 // mock
+        })
+      })
+
+      facultyData.results?.forEach((f: any) => {
+        liveUsers.push({
+          id: f.user_details.id,
+          username: f.user_details.username,
+          name: `${f.user_details.first_name} ${f.user_details.last_name}`.trim(),
+          role: 'faculty',
+          email: f.user_details.email,
+          avatar: f.user_details.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150'
+        })
+      })
+
+      // We still need the Parent mock user from db.json since we didn't build a Parent API
+      const parentUser = mockDb.users?.find((u: any) => u.role === 'parent')
+      if (parentUser) liveUsers.push(parentUser)
+
+      // Map Django Attendance to Mock DB format
+      const liveAttendanceLogs: any[] = []
+      const attendanceMap = new Map() // subject -> { present, total }
+
+      attendanceData.results?.forEach((a: any) => {
+        liveAttendanceLogs.push({
+          studentId: a.student_details.user_details.id,
+          date: a.date,
+          subject: a.subject,
+          status: a.status.toLowerCase()
+        })
+
+        const key = `${a.student_details.user_details.id}_${a.subject}`
+        if (!attendanceMap.has(key)) {
+           attendanceMap.set(key, { studentId: a.student_details.user_details.id, subject: a.subject, present: 0, total: 0 })
+        }
+        const stats = attendanceMap.get(key)
+        stats.total += 1
+        if (a.status.toLowerCase() === 'present') stats.present += 1
+      })
+
+      const liveAttendanceStats = Array.from(attendanceMap.values())
+
+      // Merge Live data over Mock data
+      return {
+        ...mockDb,
+        users: liveUsers.length > 0 ? liveUsers : mockDb.users,
+        attendanceLogs: liveAttendanceLogs.length > 0 ? liveAttendanceLogs : mockDb.attendanceLogs,
+        attendance: liveAttendanceStats.length > 0 ? liveAttendanceStats : mockDb.attendance
+      }
+
+    } catch (e) {
+      console.error('Error fetching live DB data:', e)
+      return mockDb
+    }
 })
 
-// Unified login function
+// Unified login function hitting Django backend
 export const loginUser = createServerFn({ method: 'POST' })
-  .validator((data: any) => data as { username: string; role: string })
-  .handler(async ({ data: { username, role } }) => {
-    const db = readDbRaw()
-    const user = db.users?.find(
-      (u: any) =>
-        u.username.toLowerCase() === username.toLowerCase() && u.role === role
-    )
-    if (user) {
-      return { success: true, user }
+  .validator((data: any) => data as { username: string; role: string; password?: string })
+  .handler(async ({ data: { username, role, password } }) => {
+    try {
+      // 1. Get JWT Tokens
+      const tokenRes = await fetch('http://127.0.0.1:8000/api/token/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+
+      if (!tokenRes.ok) {
+        return { success: false, error: 'Invalid credentials or user not found' }
+      }
+      
+      const tokens = await tokenRes.json()
+
+      // 2. Fetch User Profile using Access Token
+      const profileRes = await fetch('http://127.0.0.1:8000/api/accounts/profile/', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${tokens.access}`
+        }
+      })
+
+      if (!profileRes.ok) {
+        return { success: false, error: 'Failed to fetch user profile' }
+      }
+
+      const profile = await profileRes.json()
+
+      // Check if role matches what user selected
+      if (profile.role !== role) {
+         return { success: false, error: 'User not found for this role.' }
+      }
+
+      // Map Django Profile to Frontend User Shape
+      const user = {
+        id: profile.id,
+        username: profile.username,
+        name: `${profile.first_name} ${profile.last_name}`.trim(),
+        role: profile.role,
+        email: profile.email,
+        avatar: profile.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100'
+      }
+
+      return { success: true, user, tokens }
+    } catch (e) {
+      console.error(e)
+      return { success: false, error: 'Server connection error.' }
     }
-    return { success: false, error: 'User not found for this role.' }
   })
 
 // Link child to parent using student code

@@ -37,8 +37,13 @@ function Home() {
     setIsLoading(true)
 
     try {
-      const res = await loginUser({ data: { username, role } })
+      // Connect to Django backend via loginUser server function
+      const res = await loginUser({ data: { username, role, password } })
       if (res.success && res.user) {
+        // Store JWT tokens in localStorage for future client-side requests
+        if (res.tokens) {
+            localStorage.setItem('ff_tokens', JSON.stringify(res.tokens))
+        }
         auth.login(res.user)
       } else {
         setError(res.error || 'Invalid credentials')
