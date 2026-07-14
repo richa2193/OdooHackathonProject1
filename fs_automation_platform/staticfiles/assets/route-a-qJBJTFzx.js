@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-DUAcabCT.js";var t=e();function n(){return(0,t.jsx)(`div`,{children:`I'm A!`})}export{n as component};

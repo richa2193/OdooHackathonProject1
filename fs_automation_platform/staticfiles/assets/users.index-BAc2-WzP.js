@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-DUAcabCT.js";var t=e();function n(){return(0,t.jsxs)(`div`,{children:[`Select a user or`,` `,(0,t.jsx)(`a`,{href:`/api/users`,className:`text-blue-800 hover:text-blue-600 underline`,children:`view as JSON`})]})}export{n as component};

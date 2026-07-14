@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-DUAcabCT.js";import{O as t}from"./index-ByxroadG.js";var n=e();function r({error:e}){return(0,n.jsx)(t,{error:e})}export{r as t};

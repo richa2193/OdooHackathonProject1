@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FacultyFlow | Login Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/style.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Google Fonts (Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --primary-color: #4f46e5;
+      --primary-hover: #4338ca;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #09090b;
+      --card-bg: #18181b;
+      --text-main: #f8fafc;
+      --text-muted: #a1a1aa;
+      --border-color: #27272a;
+      --primary-color: #6366f1;
+      --primary-hover: #818cf8;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-h: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .login-container {
+      max-width: 440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 15px;
+    }
+
+    .login-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      padding: 40px 30px;
+      transition: all 0.3s ease;
+    }
+
+    .brand-logo {
+      height: 48px;
+      width: 48px;
+      border-radius: 12px;
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 800;
+      font-size: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+
+    .role-tabs {
+      background-color: var(--bg-color);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      margin-bottom: 24px;
+    }
+
+    .role-tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px 4px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border: none;
+      background: none;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .role-tab.active {
+      background-color: var(--card-bg);
+      color: var(--primary-color);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control-custom {
+      background-color: transparent !important;
+      border: 1px solid var(--border-color) !important;
+      color: var(--text-main) !important;
+      border-radius: 10px !important;
+      padding: 10px 14px !important;
+      font-size: 13px !important;
+      transition: all 0.2s ease;
+    }
+
+    .form-control-custom:focus {
+      border-color: var(--primary-color) !important;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+    }
+
+    .btn-submit {
+      background-color: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+      color: white !important;
+      border-radius: 10px !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      padding: 12px !important;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover) !important;
+      border-color: var(--primary-hover) !important;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-main);
+      padding: 8px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+    }
+
+    .demo-helper {
+      border-top: 1px solid var(--border-color);
+      padding-top: 15px;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    .alert-custom {
+      border-radius: 10px;
+      font-size: 12px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Toggle Switcher -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+    <i id="theme-icon" class="bi bi-moon-fill"></i>
+  </button>
+
+  <div class="login-container">
+    <div class="login-card">
+      <div class="text-center mb-4">
+        <div class="brand-logo mb-3">FF</div>
+        <h2 class="h4 fw-bold mb-1">Welcome to FacultyFlow</h2>
+        <p class="text-muted small">Academic Automation Platform</p>
+      </div>
+
+      <!-- Role Selector Tabs -->
+      <div class="role-tabs">
+        <button id="tab-student" class="role-tab active" onclick="setRole('student')">
+          <i class="bi bi-mortarboard-fill me-1"></i>Student
+        </button>
+        <button id="tab-parent" class="role-tab" onclick="setRole('parent')">
+          <i class="bi bi-people-fill me-1"></i>Parent
+        </button>
+        <button id="tab-faculty" class="role-tab" onclick="setRole('faculty')">
+          <i class="bi bi-building-fill me-1"></i>Faculty
+        </button>
+      </div>
+
+      <!-- Status Alert Box -->
+      <div id="status-alert" class="alert alert-danger alert-custom d-none" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-1"></i>
+        <span id="alert-text">Invalid Credentials.</span>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form">
+        <div class="mb-3">
+          <label for="username" class="form-label small fw-bold text-secondary uppercase">Username</label>
+          <input type="text" id="username" class="form-control form-control-custom" placeholder="Enter username" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label small fw-bold text-secondary uppercase">Password</label>
+          <input type="password" id="password" class="form-control form-control-custom" placeholder="••••••••" required>
+        </div>
+
+        <div class="d-grid mt-4">
+          <button type="submit" id="btn-login" class="btn btn-submit">
+            <span id="btn-text">Sign In</span>
+            <span id="btn-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Quick Credentials Box -->
+      <div class="demo-helper">
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2.5 py-1 rounded-pill mb-2 select-none uppercase tracking-wider font-bold" style="font-size: 9px;">
+          Demo Credentials
+        </span>
+        <p class="text-secondary mb-0">
+          Username: <strong id="helper-user" class="text-dark-emphasis">ayushi</strong><br>
+          Password: <strong class="text-dark-emphasis">password</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentRole = 'student';
+
+    // Theme Switcher Logic
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+
+    // Load theme
+    const savedTheme = localStorage.getItem('ff_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    themeBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const target = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', target);
+      localStorage.setItem('ff_theme', target);
+      updateThemeIcon(target);
+    });
+
+    function updateThemeIcon(theme) {
+      if (theme === 'dark') {
+        themeIcon.className = 'bi bi-sun-fill';
+      } else {
+        themeIcon.className = 'bi bi-moon-fill';
+      }
+    }
+
+    // Role Tab Changer Logic
+    function setRole(role) {
+      currentRole = role;
+      
+      // Update UI active tabs
+      document.querySelectorAll('.role-tab').forEach(tab => tab.classList.remove('active'));
+      document.getElementById(`tab-${role}`).classList.add('active');
+
+      // Update inputs & helper credentials
+      const userField = document.getElementById('username');
+      const helperUser = document.getElementById('helper-user');
+      const alertBox = document.getElementById('status-alert');
+      alertBox.classList.add('d-none');
+
+      if (role === 'student') {
+        userField.value = 'ayushi';
+        helperUser.textContent = 'ayushi';
+      } else if (role === 'parent') {
+        userField.value = 'parent_sharma';
+        helperUser.textContent = 'parent_sharma';
+      } else if (role === 'faculty') {
+        userField.value = 'sarah';
+        helperUser.textContent = 'sarah';
+      }
+    }
+
+    // Set initial form value
+    setRole('student');
+
+    // Handle Form Submit (API connection + local mock fallback)
+    const form = document.getElementById('login-form');
+    const btnText = document.getElementById('btn-text');
+    const btnSpinner = document.getElementById('btn-spinner');
+    const btnLogin = document.getElementById('btn-login');
+    const alertBox = document.getElementById('status-alert');
+    const alertText = document.getElementById('alert-text');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.classList.add('d-none');
+      
+      // Loading State
+      btnText.textContent = 'Connecting...';
+      btnSpinner.classList.remove('d-none');
+      btnLogin.disabled = true;
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        // Attempt connecting to the TanStack Start Auth API
+        const response = await fetch('/_server', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-server-fn-id': 'loginUser'
+          },
+          body: JSON.stringify({
+            data: { username, role: currentRole }
+          })
+        });
+
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+          handleLoginSuccess(result.user);
+          return;
+        }
+      } catch (err) {
+        console.warn('API Endpoint not listening. Falling back to local authentication...');
+      }
+
+      // Local Fallback Authentication
+      setTimeout(() => {
+        const mockUsers = [
+          { id: 'student1', username: 'ayushi', name: 'Ayushi Sharma', role: 'student', studentCode: 'STU101' },
+          { id: 'student2', username: 'karena', name: 'Karena Roy', role: 'student', studentCode: 'STU102' },
+          { id: 'teacher1', username: 'sarah', name: 'Dr. Sarah Jenkins', role: 'faculty' },
+          { id: 'parent1', username: 'parent_sharma', name: 'Mr. Rakesh Sharma', role: 'parent', linkedChildren: ['student1'] }
+        ];
+
+        const match = mockUsers.find(
+          u => u.username.toLowerCase() === username.toLowerCase() && u.role === currentRole && password === 'password'
+        );
+
+        if (match) {
+          handleLoginSuccess(match);
+        } else {
+          // Failure
+          alertText.textContent = `Authentication failed: Invalid username or password for ${currentRole.toUpperCase()} role.`;
+          alertBox.classList.remove('d-none');
+          btnText.textContent = 'Sign In';
+          btnSpinner.classList.add('d-none');
+          btnLogin.disabled = false;
+        }
+      }, 1000);
+    });
+
+    function handleLoginSuccess(user) {
+      localStorage.setItem('ff_auth', JSON.stringify(user));
+      alertBox.classList.add('d-none');
+      btnText.textContent = 'Redirecting...';
+      
+      setTimeout(() => {
+        // Redirect to respective routes
+        if (user.role === 'student') {
+          window.location.href = '/student/dashboard';
+        } else if (user.role === 'parent') {
+          window.location.href = '/parent/dashboard';
+        } else if (user.role === 'faculty') {
+          window.location.href = '/faculty/dashboard';
+        } else {
+          window.location.href = '/';
+        }
+      }, 800);
+    }
+  </script>
+</body>
+</html>
